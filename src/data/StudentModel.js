@@ -1,7 +1,7 @@
 import ObservableModel from "../ObservableModel";
 const API_BASE_URL= "https://redtachyon.eu.pythonanywhere.com";
 const httpOptions = {
-    headers: { "Authorization": "SKELETON_KEY"}
+    headers: {"Authorization": "SKELETON_KEY"}
 };
 class StudentModel extends ObservableModel {
     
@@ -11,7 +11,7 @@ class StudentModel extends ObservableModel {
         this.questionnaire = "1";
         this.questions = [];
         this.responses = [];
-        this.stId = "15"; 
+        this.stId = "11"; 
     }
 
     /* not needed yet 
@@ -68,6 +68,7 @@ class StudentModel extends ObservableModel {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             headers: {
                 'Content-Type': 'application/json',
+                "Authorization": "SKELETON_KEY"
             },
             mode: "cors", // no-cors, cors, *same-origin
             body: JSON.stringify(data), // body data type must match "Content-Type" header
@@ -86,6 +87,24 @@ class StudentModel extends ObservableModel {
             return response;
         }
         throw response;
+    }
+    getAnswers(question) {
+        if (question.type == "scalar") {
+            return this.getScalarAnswers(question.min, question.max);
+        }
+        else {
+            return modelInstance.getQuestions().students;
+        }
+    }
+    getScalarAnswers(min, max) {
+        let array = [];
+        for(var i = min; i <= max; i++) {
+            array.push({
+                id: i, 
+                name: i.toString()
+              });
+        }
+        return array;
     }
 }
 

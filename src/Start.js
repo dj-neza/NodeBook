@@ -28,7 +28,7 @@ class Start extends Component {
         modelInstance.fetchQuestions(this.state.studentID, this.state.Qid).then(questions => {
           modelInstance.setQuestions(questions);
 
-          let responseArray = questions.info.questions.map(question => []); // TODO: (question.type == 'sociometric') ? [] : 3);
+          let responseArray = questions.info.questions.map(question => (question.type == 'sociometric') ? [] : 0);
           modelInstance.setResponses(responseArray);
           console.log("lol");
           this.setState({

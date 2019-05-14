@@ -16,7 +16,8 @@ class Home extends Component {
         windowWidth: 0,
         status: 'INITIAL', 
         studentID: modelInstance.getStudentId(), 
-        questionnaires: [{id: "", date: "No questionnaires."}]
+        noActive: true,
+        questionnaires: []
       }
       this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -26,7 +27,9 @@ class Home extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);    
 
         modelInstance.getAllQuestionnaires(this.state.studentID).then(qs => {
+          console.log(qs);
           if (qs.experiments.length != 0) {
+            this.setState({noActive: false});
             this.state.questionnaires = qs.experiments;
             for (var i = 0; i < qs.experiments.length; i++) {
                 var d = new Date(qs.experiments[i].date);
@@ -85,10 +88,11 @@ class Home extends Component {
                             <Col xs={{span: 8, offset: 1}}><h3>Assigned tasks: </h3></Col>
                             <Col xs={{span: 3}} onClick={this.refresh.bind(this)}><MdRefresh style={{width: "30", height: "30", color: "#3f3f3f"}}/></Col>
                         </Row>
-                        {this.state.questionnaires.map(q => 
+                        {this.state.noActive == false && this.state.questionnaires.map(q => 
                         <div key={q.id}><Link to={{pathname: "/student/" + q.id}}><div className="alo" style={{backgroundColor: 'white'}} align="center">
                                 <div style={{color: "#3f3f3f"}}>Task {q.id} - {q.date} </div>
                         </div></Link></div>)}
+                        {this.state.noActive == true && <div style={{color: "#3f3f3f"}}>No active tasks.</div>}
                     </div>
             break;
           default:

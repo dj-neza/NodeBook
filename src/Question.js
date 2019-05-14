@@ -14,8 +14,9 @@ class Question extends Component {
       this.state = {
         windowHeight: 0,
         windowWidth: 0,
+        type: modelInstance.getQuestions().info.questions[this.props.match.params.id].type,
         questions: modelInstance.getQuestions().info.questions,
-        answers: modelInstance.getQuestions().students,
+        answers: modelInstance.getAnswers(modelInstance.getQuestions().info.questions[this.props.match.params.id]),
         response: modelInstance.getResponsesForQ(this.props.match.params.id),
         studentID: modelInstance.getStudentId(),
         id: this.props.match.params.id, 
@@ -37,43 +38,55 @@ class Question extends Component {
     changeColor(event) {
       let newResponse = this.state.response;
       let changed = false;
-      if (this.state.response.length == 0) {
-        newResponse[0] = parseInt(event.currentTarget.id);
+
+      if (this.state.type == "sociometric") {
+        if (this.state.response.length == 0) {
+          newResponse[0] = parseInt(event.currentTarget.id);
+        }
+        else {
+          for (var i = 0; i < this.state.response.length; i++) {
+            if (this.state.response[i] == parseInt(event.currentTarget.id)) {
+              newResponse.splice(i, 1);
+              changed = true;
+              break;
+            }
+            else if (this.state.response[i] > parseInt(event.currentTarget.id) && this.state.response.length < this.state.questions[this.state.id].max) {
+              newResponse.splice(i, 0, parseInt(event.currentTarget.id));
+              changed = true;
+              break;
+            }
+          }
+          if (!changed && this.state.response.length < this.state.questions[this.state.id].max) { newResponse.push(parseInt(event.currentTarget.id)); }
+        }
       }
       else {
-        for (var i = 0; i < this.state.response.length; i++) {
-          if (this.state.response[i] == parseInt(event.currentTarget.id)) {
-            newResponse.splice(i, 1);
-            changed = true;
-            break;
-          }
-          else if (this.state.response[i] > parseInt(event.currentTarget.id)) {
-            newResponse.splice(i, 0, parseInt(event.currentTarget.id));
-            changed = true;
-            break;
-          }
-        }
-        if (!changed ) { newResponse.push(parseInt(event.currentTarget.id)); }
+        newResponse = parseInt(event.currentTarget.id);
       }
+      console.log(newResponse);
       this.setState({ response: newResponse });
     }
     isItMarked(id) {
-      if (this.state.response.length == 0) return false;
-      for (var i = 0; i < this.state.response.length; i++) {
-        if (this.state.response[i] == parseInt(id)) return true; 
+      if (this.state.type == "sociometric") {
+        if (this.state.response.length == 0) return false;
+        for (var i = 0; i < this.state.response.length; i++) {
+          if (this.state.response[i] == parseInt(id)) return true; 
+        }
+      }
+      else {
+        if (this.state.response == parseInt(id)) return true; 
       }
       return false;
     }
     updateFnBack(event) {
       modelInstance.setResponsesForQ(this.state.id, this.state.response);
       if (parseInt(this.state.id)-1 >= 0) {
-        this.setState({id: (parseInt(this.state.id)-1).toString(), response: modelInstance.getResponsesForQ(parseInt(this.state.id)-1)});
-      }
+        this.setState({id: (parseInt(this.state.id)-1).toString(), answers: modelInstance.getAnswers(this.state.questions[parseInt(this.state.id)-1]), type: this.state.questions[parseInt(this.state.id)-1].type, response: modelInstance.getResponsesForQ(parseInt(this.state.id)-1)});
+       }
     }
     updateFnNext(event) {
       modelInstance.setResponsesForQ(this.state.id, this.state.response);
       if (parseInt(this.state.id)+1 < this.state.questions.length) {
-        this.setState({id: (parseInt(this.state.id)+1).toString(), response: modelInstance.getResponsesForQ(parseInt(this.state.id)+1)});
+        this.setState({id: (parseInt(this.state.id)+1).toString(), answers: modelInstance.getAnswers(this.state.questions[parseInt(this.state.id)+1]), type: this.state.questions[parseInt(this.state.id)+1].type, response: modelInstance.getResponsesForQ(parseInt(this.state.id)+1)});
       }
     }
 
@@ -81,18 +94,22 @@ class Question extends Component {
     render() {
         let h = this.state.windowHeight - 62;
         let id = this.props.match.params.id;
-        let back = (parseInt(id)-1 < 0) ? "/" : ("/question/" + (parseInt(id)-1));
+        let back = (parseInt(id)-1 < 0) ? "/student" : ("/question/" + (parseInt(id)-1));
         let next = (parseInt(id)+1 < this.state.questions.length) ? ("/question/" + (parseInt(id)+1)): "/end" ;
       return (
         <div className="start" align="center">
             <div style={{width: "100%", height: h, backgroundColor: "#f6f6f6"}} align="center">
                 <h4 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>{parseInt(id)+1}. {this.state.questions[parseInt(id)].text}</h4>
-                <div style={{ height: "360px", overflow: "scroll", backgroundColor: "white"}}>
+                <div>{(this.state.type=="sociometric" && this.state.questions[parseInt(id)].min == this.state.questions[parseInt(id)].max) && <div>Select 1 answer.</div>}</div>
+                <div>{(this.state.type=="sociometric" && this.state.questions[parseInt(id)].min != this.state.questions[parseInt(id)].max) && <div>Select {this.state.questions[parseInt(id)].min} to {this.state.questions[parseInt(id)].max} answers.</div>}</div>
+                <div>{this.state.type=="scalar" && <div>least</div>}</div>
+                <div style={{ maxHeight: "345px", overflow: "scroll", backgroundColor: "white"}}>
                     {this.state.answers.map((answer, i) => 
                     <div key={answer.id} id={answer.id} className="alo" style={this.isItMarked(answer.id) ? {backgroundColor: '#388E8E'} : {backgroundColor: 'white'}} align="center" onClick={this.changeColor.bind(this)}>
                             {answer.name}
                     </div>)}
                 </div>
+                <div>{this.state.type=="scalar" && <div>most</div>}</div>
                 <div style={{paddingTop: "5px"}} >
                     <div style={{float: "left"}}><Link to={{pathname: back, 
                           query:{studentid: this.state.studentID}}} onClick={this.updateFnBack.bind(this)}><div><MdKeyboardArrowLeft style={{width: "40", height: "40"}}/>Back</div></Link></div>
