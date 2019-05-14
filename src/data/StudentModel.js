@@ -75,6 +75,27 @@ class StudentModel extends ObservableModel {
         .then(this.processResponse2);
     }
 
+    createAccount(email, password, name, role) {
+        console.log("creating a new account");
+        const url = `${API_BASE_URL}/auth/register`;
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Authorization': "SKELETON_KEY",
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                name: name,
+                role: role
+            })
+        }).then(res => {
+            return res;
+        }).catch(err => err);
+    }
+
     processResponse(response) {
         if (response.ok) {
             return response.json();
