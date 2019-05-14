@@ -31,7 +31,7 @@ class App extends Component {
                   </Link>
           </div>
           <Route exact path="/" 
-            render={() => <Start teacher={this.state.teacher}  />} 
+            render={() => <Home />}   
           />
           <Route exact path="/sign-up"
                     render={() => <SignUp />}
