@@ -10,6 +10,7 @@ import logo from './imgs/icon1.png';
 import logo_long from './imgs/transparent_NodeBook.png';
 import { modelInstance } from './data/StudentModel';
 import './App.css';
+import Auth from "./Auth";
 
 class App extends Component {
   constructor(props) {
@@ -29,6 +30,9 @@ class App extends Component {
           </div>
           <Route exact path="/" 
             render={() => <Start teacher={this.state.teacher}  />} 
+          />
+          <Route exact path="/auth"
+                 render={() => <Auth />}
           />
           <Route exact path="/student"
             render={() => <Home />}  

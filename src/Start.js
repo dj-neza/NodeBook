@@ -15,8 +15,9 @@ class Start extends Component {
         windowWidth: 0,
         status: 'INITIAL', 
         studentID: modelInstance.getStudentId(), 
-        Qid: this.props.match.params.taskId
+        // Qid: this.props.match.params.taskId
       }
+
       this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
