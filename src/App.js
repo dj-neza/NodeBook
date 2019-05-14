@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Link, Route} from "react-router-dom";
 
+import Home from "./Home";
 import Start from "./Start";
 import Question from "./Question";
 import End from "./End";
@@ -27,14 +28,20 @@ class App extends Component {
                   </Link>
           </div>
           <Route exact path="/" 
-            render={() => <Start teacher={this.state.teacher}  />}
+            render={() => <Start teacher={this.state.teacher}  />} 
+          />
+          <Route exact path="/student"
+            render={() => <Home />}  
+          />
+          <Route exact path="/student/:taskId"
+            render={(props) => <Start {...props} teacher={this.state.teacher}  />}  
           />
           <Route 
-            path="/question/:id" 
+            exact path="/question/:id" 
             render={(props) => <Question {...props} />}
           />
           <Route
-              path="/end"
+              exact path="/end"
               render={(props) => <End {...props}  />}
           />
       </div>

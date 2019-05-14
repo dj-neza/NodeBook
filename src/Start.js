@@ -13,6 +13,9 @@ class Start extends Component {
       this.state = {
         windowHeight: 0,
         windowWidth: 0,
+        status: 'INITIAL', 
+        studentID: modelInstance.getStudentId(), 
+        Qid: this.props.match.params.taskId
       }
       this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
@@ -20,6 +23,22 @@ class Start extends Component {
     componentDidMount() {    
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);    
+        console.log(this.state.Qid);
+        modelInstance.setQuestionnaire(this.state.Qid);
+        modelInstance.fetchQuestions(this.state.studentID, this.state.Qid).then(questions => {
+          modelInstance.setQuestions(questions);
+
+          let responseArray = questions.info.questions.map(question => []); // TODO: (question.type == 'sociometric') ? [] : 3);
+          modelInstance.setResponses(responseArray);
+          console.log("lol");
+          this.setState({
+            status: 'LOADED'
+          });
+        }).catch(() => {
+          this.setState({
+            status: 'ERROR'
+          })
+        });
     }
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
@@ -30,19 +49,36 @@ class Start extends Component {
 
     render() {
         let h = this.state.windowHeight - 62;
-
         const teacher = this.props.teacher;
+        let show; 
+
+        switch (this.state.status) {
+          case 'INITIAL':
+            show = <b style={{padding: "40px"}}>Loading...</b>
+            break;
+          case 'LOADED':
+          console.log("lala");
+              show = <div style={{width: "100%", height: h, backgroundColor: "#f6f6f6"}} align="center">
+                        <h3 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>Start a questionnaire from your teacher {teacher}</h3>
+                        <div style={{marginTop: "150px", padding: "5px"}}><Link to={{
+                            pathname: "/question/" + modelInstance.getQuestions().info.questions[0].question_no, 
+                            query:{studentid: this.state.studentID}}}>
+                            <Button variant="info" style={{width: "80%"}}>START</Button>
+                        </Link></div>
+                        <div style={{padding: "5px"}}><Link to={{
+                          pathname: "/student", 
+                          query:{studentid: false}}}>
+                            <Button variant="secondary" style={{width: "80%"}}>CANCEL</Button> 
+                        </Link></div>
+                    </div>
+            break;
+          default:
+            show = <b style={{padding: "40px"}}>Could not load the questionnaire, please try again.</b>
+            break;
+        }
       return (
         <div className="start" align="center">
-            <div style={{width: "100%", height: h, backgroundColor: "#f6f6f6"}} align="center">
-                <h3 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>Start a questionnaire from your teacher {teacher}</h3>
-                <div style={{marginTop: "150px", padding: "5px"}}><Link to="/question/1">
-                    <Button variant="info" style={{width: "80%"}}>START</Button>
-                </Link></div>
-                <div style={{padding: "5px"}}><Link to="/end">
-                    <Button variant="secondary" style={{width: "80%"}}>CANCEL</Button> 
-                </Link></div>
-            </div>
+            {show}
         </div>
       );
     }
