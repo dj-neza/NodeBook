@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { Row } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
 import './App.css';
+import NavLink from "react-bootstrap/NavLink";
   
 class Start extends Component {
     constructor(props) {
@@ -15,8 +16,9 @@ class Start extends Component {
         windowWidth: 0,
         status: 'INITIAL', 
         studentID: modelInstance.getStudentId(), 
-        Qid: this.props.match.params.taskId
+        // Qid: this.props.match.params.taskId
       }
+
       this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
@@ -79,6 +81,9 @@ class Start extends Component {
       return (
         <div className="start" align="center">
             {show}
+            <div className="FormTitle">
+                <Link to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</Link> or <Link to="/sign-up" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</Link>
+            </div>
         </div>
       );
     }
