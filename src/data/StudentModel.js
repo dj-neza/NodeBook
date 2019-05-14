@@ -12,7 +12,7 @@ class StudentModel extends ObservableModel {
         this.questionnaire = "1";
         this.questions = [];
         this.responses = [];
-        this.stId = "11"; 
+        this.stId = "13"; 
     }
 
     /* not needed yet 

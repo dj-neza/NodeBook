@@ -33,14 +33,13 @@ class App extends Component {
           <Route exact path="/" 
             render={() => <Start teacher={this.state.teacher}  />} 
           />
+          <Route exact path="/sign-up"
+                    render={() => <SignUp />}
+              />
 
-		  <Route exact path="/sign-up"
-                 render={() => <SignUp />}
+              <Route exact path="/sign-in"
+            render={() => <SignIn />}
           />
-
-          <Route exact path="/sign-in"
-				 render={() => <SignIn />}
-		  />
           <Route exact path="/student"
             render={() => <Home />}  
           />

@@ -16,7 +16,7 @@ class Start extends Component {
         windowWidth: 0,
         status: 'INITIAL', 
         studentID: modelInstance.getStudentId(), 
-        // Qid: this.props.match.params.taskId
+        Qid: this.props.match.params.taskId
       }
 
       this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
@@ -65,12 +65,12 @@ class Start extends Component {
                         <div style={{marginTop: "150px", padding: "5px"}}><Link to={{
                             pathname: "/question/" + modelInstance.getQuestions().info.questions[0].question_no, 
                             query:{studentid: this.state.studentID}}}>
-                            <Button variant="info" style={{width: "80%"}}>START</Button>
+                            <Button variant="info" style={{width: "80%", backgroundColor: "#5E94B0"}}>START</Button>
                         </Link></div>
                         <div style={{padding: "5px"}}><Link to={{
                           pathname: "/student", 
                           query:{studentid: false}}}>
-                            <Button variant="secondary" style={{width: "80%"}}>CANCEL</Button> 
+                            <Button variant="secondary" style={{width: "80%", backgroundColor: "#C56359"}}>CANCEL</Button> 
                         </Link></div>
                     </div>
             break;
@@ -81,12 +81,12 @@ class Start extends Component {
       return (
         <div className="start" align="center">
             {show}
-            <div className="FormTitle">
-                <Link to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</Link> or <Link to="/sign-up" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</Link>
-            </div>
         </div>
       );
     }
   }
-  
+  /* under show
+  <div className="FormTitle">
+      <Link to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</Link> or <Link to="/sign-up" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</Link>
+  </div> */
   export default Start;

@@ -105,16 +105,16 @@ class Question extends Component {
                 <div>{this.state.type=="scalar" && <div>least</div>}</div>
                 <div style={{ maxHeight: "345px", overflow: "scroll", backgroundColor: "white"}}>
                     {this.state.answers.map((answer, i) => 
-                    <div key={answer.id} id={answer.id} className="alo" style={this.isItMarked(answer.id) ? {backgroundColor: '#388E8E'} : {backgroundColor: 'white'}} align="center" onClick={this.changeColor.bind(this)}>
+                    <div key={answer.id} id={answer.id} className="alo" style={this.isItMarked(answer.id) ? {backgroundColor: '#5E94B0'} : {backgroundColor: 'white'}} align="center" onClick={this.changeColor.bind(this)}>
                             {answer.name}
                     </div>)}
                 </div>
                 <div>{this.state.type=="scalar" && <div>most</div>}</div>
                 <div style={{paddingTop: "5px"}} >
                     <div style={{float: "left"}}><Link to={{pathname: back, 
-                          query:{studentid: this.state.studentID}}} onClick={this.updateFnBack.bind(this)}><div><MdKeyboardArrowLeft style={{width: "40", height: "40"}}/>Back</div></Link></div>
+                          query:{studentid: this.state.studentID}}} onClick={this.updateFnBack.bind(this)} style={{color: "#5E94B0"}}><div><MdKeyboardArrowLeft style={{width: "40", height: "40"}}/>Back</div></Link></div>
                     <div style={{float: "right", paddingRight: "15px"}}><Link to={{pathname: next, 
-                          query:{studentid: this.state.studentID}}} onClick={this.updateFnNext.bind(this)}><div><MdKeyboardArrowRight style={{width: "40", height: "40"}}/>Next</div></Link></div>
+                          query:{studentid: this.state.studentID}}} onClick={this.updateFnNext.bind(this)} style={{color: "#5E94B0"}}><div><MdKeyboardArrowRight style={{width: "40", height: "40"}}/>Next</div></Link></div>
                 </div>
             </div>
         </div>

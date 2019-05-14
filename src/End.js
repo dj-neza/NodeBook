@@ -6,6 +6,7 @@ import { modelInstance } from './data/StudentModel';
 import './App.css';
 
 import pic from './imgs/pic1.png';
+import pic2 from './imgs/pic2.png';
   
 class End extends Component {
     constructor(props) {
@@ -77,17 +78,18 @@ class End extends Component {
                       <img src={pic} width={100}/>
                       <div style={{padding: "5px"}}><Link to={{
                           pathname: "/student"}}>
-                            <Button variant="secondary" style={{width: "80%"}}>CLOSE</Button> 
+                            <Button variant="secondary" style={{width: "80%", backgroundColor: "#C56359"}}>CLOSE</Button> 
                       </Link></div>
                   </div>
             break;
           case 'INCOMPLETE': 
             show = <div style={{paddingTop: "80px"}} align="center">
-                    <b style={{padding: "40px"}}>Please go back and answer all questions.</b>
+                    <h3 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>Please go back and answer all questions.</h3>
+                    <img src={pic2} width={100}/>
                     <div style={{padding: "5px"}}><Link to={{
                       pathname: "/question/" + parseInt(modelInstance.getQuestions().info.questions.length - 1),
                       query:{studentid: false}}}>
-                        <Button variant="secondary" style={{width: "80%"}}>GO BACK</Button> 
+                        <Button variant="secondary" style={{width: "80%", backgroundColor: "#C56359"}}>GO BACK</Button> 
                     </Link></div>
                   </div>
             break; 
