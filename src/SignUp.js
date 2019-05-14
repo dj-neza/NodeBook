@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import './App.css';
 import modelInstance from './data/StudentModel';
 
-class Auth extends Component {
+class SignUp extends Component {
 
 	constructor(props) {
 		super(props);
@@ -25,25 +25,21 @@ class Auth extends Component {
 
 		switch (name) {
 			case 'email':
-				console.log("email: " + target.value);
 				this.setState({
 					email: target.value
 				})
 				break;
 			case 'password':
-				console.log("password: " + target.value);
 				this.setState({
 					password: target.value
 				})
 				break;
 			case 'name':
-				console.log("name: " + target.value);
 				this.setState({
 					name: target.value
 				})
 				break;
 			case 'role':
-				console.log("role: " + target.value);
 				this.setState({
 					role: target.value
 				})
@@ -55,7 +51,6 @@ class Auth extends Component {
 
 	handleSubmit(e) {
 		e.preventDefault();
-		console.log("submit");
 		let email = this.state.email;
 		let password = this.state.password;
 		let name = this.state.name;
@@ -130,4 +125,4 @@ class Auth extends Component {
 	}
 }
 
-export default Auth;
+export default SignUp;

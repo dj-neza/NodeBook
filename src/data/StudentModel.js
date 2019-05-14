@@ -3,6 +3,7 @@ const API_BASE_URL= "https://redtachyon.eu.pythonanywhere.com";
 const httpOptions = {
     headers: { "Authorization": "SKELETON_KEY"}
 };
+
 class StudentModel extends ObservableModel {
     
     constructor() {
@@ -76,7 +77,6 @@ class StudentModel extends ObservableModel {
     }
 
     createAccount(email, password, name, role) {
-        console.log("creating a new account");
         const url = `${API_BASE_URL}/auth/register`;
         return fetch(url, {
             method: 'POST',
@@ -90,6 +90,23 @@ class StudentModel extends ObservableModel {
                 password: password,
                 name: name,
                 role: role
+            })
+        }).then(res => {
+            return res;
+        }).catch(err => err);
+    }
+
+    logIn(email, password) {
+        const url = `${API_BASE_URL}/auth/login`;
+        return fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password
             })
         }).then(res => {
             return res;

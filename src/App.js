@@ -10,7 +10,9 @@ import logo from './imgs/icon1.png';
 import logo_long from './imgs/transparent_NodeBook.png';
 import { modelInstance } from './data/StudentModel';
 import './App.css';
-import Auth from "./Auth";
+import SignUp from "./SignUp";
+import NavLink from "react-bootstrap/NavLink";
+import SignIn from "./SignIn";
 
 class App extends Component {
   constructor(props) {
@@ -31,9 +33,14 @@ class App extends Component {
           <Route exact path="/" 
             render={() => <Start teacher={this.state.teacher}  />} 
           />
-          <Route exact path="/auth"
-                 render={() => <Auth />}
+
+		  <Route exact path="/sign-up"
+                 render={() => <SignUp />}
           />
+
+          <Route exact path="/sign-in"
+				 render={() => <SignIn />}
+		  />
           <Route exact path="/student"
             render={() => <Home />}  
           />
