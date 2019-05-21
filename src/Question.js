@@ -5,7 +5,10 @@ import { Row, Col } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md';
 import './App.css';
-  
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 class Question extends Component {
     constructor(props) {
       super(props);
@@ -18,7 +21,8 @@ class Question extends Component {
         questions: modelInstance.getQuestions().info.questions,
         answers: modelInstance.getAnswers(modelInstance.getQuestions().info.questions[this.props.match.params.id]),
         response: modelInstance.getResponsesForQ(this.props.match.params.id),
-        studentID: modelInstance.getStudentId(),
+        // studentID: modelInstance.getStudentId(),
+        studentID: cookies.get("studentID"),
         id: this.props.match.params.id, 
         Qid: modelInstance.getQuestionnaire()
       }

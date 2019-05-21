@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import './App.css';
 import modelInstance from './data/StudentModel';
+import Cookies from "universal-cookie";
+
+import {
+	withRouter
+} from 'react-router-dom';
+
+const cookies = new Cookies();
 
 class SignIn extends Component {
 
@@ -51,9 +58,12 @@ class SignIn extends Component {
 					teacherID: data.teacher_id
 				})
 			).then(res => {
-				console.log(res.token + " " + res.message + " " + res.status + " " + res.studentID + " " + res.teacherID);
+				// console.log(res.token + " " + res.message + " " + res.status + " " + res.studentID + " " + res.teacherID);
+				cookies.set('token', res.token, { path: '/' });
+				cookies.set('studentID', res.studentID, {path: '/'});
 			})
 		});
+		this.props.history.push('/tasks');
 	}
 
 
@@ -84,7 +94,7 @@ class SignIn extends Component {
 						<label className="FormField__Label" htmlFor="password">Password</label>
 						<input
 							required
-							type="text"
+							type="password"
 							name="password"
 							id="password" className="FormField__Input" placeholder="Enter your password"
 							value={this.state.password}
@@ -99,4 +109,4 @@ class SignIn extends Component {
 	}
 }
 
-export default SignIn;
+export default withRouter(SignIn);

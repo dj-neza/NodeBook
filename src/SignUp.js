@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import './App.css';
 import modelInstance from './data/StudentModel';
+import Cookies from 'universal-cookie';
+
+import {
+	withRouter
+} from 'react-router-dom';
+
+const cookies = new Cookies();
 
 class SignUp extends Component {
 
@@ -11,7 +18,8 @@ class SignUp extends Component {
 			email: '',
 			password: '',
 			name: '',
-			role: ''
+			role: 'student',
+			token:''
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -55,7 +63,17 @@ class SignUp extends Component {
 		let password = this.state.password;
 		let name = this.state.name;
 		let role = this.state.role;
-		modelInstance.createAccount(email, password, name, role);
+		modelInstance.createAccount(email, password, name, role).then(result => {
+			result.json().then(data => ({
+					token: data.auth_token,
+					studentID: data.student_id
+				})
+			).then(res => {
+				cookies.set('token', res.token, { path: '/' });
+				cookies.set('studentID', res.studentID, {path: '/'});
+			})
+		});
+		setTimeout(() => this.props.history.push('/tasks'), 800)
 	}
 
 
@@ -87,7 +105,7 @@ class SignUp extends Component {
 						<label className="FormField__Label" htmlFor="password">Password</label>
 						<input
 							required
-							type="text"
+							type="password"
 							name="password"
 							id="password" className="FormField__Input" placeholder="Enter your password"
 							value={this.state.password}
@@ -104,18 +122,6 @@ class SignUp extends Component {
 							value={this.state.name}
 							onChange={this.handleChange}/>
 					</div>
-
-					<div className="FormField">
-						<label className="FormField__Label" htmlFor="role">Role</label>
-						<input
-							required
-							type="text"
-							name="role"
-							id="role" className="FormField__Input" placeholder="Enter your role (teacher or student)"
-							value={this.state.role}
-							onChange={this.handleChange}/>
-					</div>
-
 					<div className="FormField">
 						<button className="FormField__Button mr-20" disabled={this.checkInput()}>Sign Up</button>
 					</div>
@@ -125,4 +131,4 @@ class SignUp extends Component {
 	}
 }
 
-export default SignUp;
+export default withRouter(SignUp);

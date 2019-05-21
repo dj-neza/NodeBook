@@ -1,8 +1,11 @@
 import ObservableModel from "../ObservableModel";
+import Cookies from "universal-cookie";
 const API_BASE_URL= "https://redtachyon.eu.pythonanywhere.com";
 const httpOptions = {
     headers: {"Authorization": "SKELETON_KEY"}
 };
+
+const cookies = new Cookies();
 
 class StudentModel extends ObservableModel {
     
@@ -12,7 +15,7 @@ class StudentModel extends ObservableModel {
         this.questionnaire = "1";
         this.questions = [];
         this.responses = [];
-        this.stId = "13"; 
+        // this.stId = cookies.studentId;
     }
 
     /* not needed yet 
@@ -22,17 +25,24 @@ class StudentModel extends ObservableModel {
     getTeacher(){
         return  this.teacher;
     }
-    getStudentId() {
-        return this.stId;
-    }
-    getAllQuestionnaires(studentID) {
+    // getStudentId() {
+    //     return this.stId;
+    // }
+
+    getAllQuestionnaires(studentID, token) {
         const url = `${API_BASE_URL}/api/student/get_questionnaires/` + studentID;
-        return fetch(url, httpOptions).then(this.processResponse);
+        let httpOptionsUser = {
+            headers: {"Authorization": "Bearer " + token}
+        };
+        return fetch(url, httpOptionsUser).then(this.processResponse);
     }
-    fetchQuestions(studentID, questionnaireID) {
+    fetchQuestions(studentID, questionnaireID, token) {
         this.questionnaire = questionnaireID;
         const url = `${API_BASE_URL}/api/student/questionnaire_info/` + studentID + `/` + questionnaireID;
-        return fetch(url, httpOptions).then(this.processResponse);
+        let httpOptionsUser = {
+            headers: {"Authorization": "Bearer " + token}
+        };
+        return fetch(url, httpOptionsUser).then(this.processResponse);
     }
     setQuestions(qs) {
         this.questions = qs;
@@ -78,7 +88,7 @@ class StudentModel extends ObservableModel {
     }
 
     createAccount(email, password, name, role) {
-        const url = `${API_BASE_URL}/auth/register`;
+        const url = `${API_BASE_URL}/demo/register`;
         return fetch(url, {
             method: 'POST',
             headers: {

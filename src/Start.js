@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { Row } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
 import './App.css';
-import NavLink from "react-bootstrap/NavLink";
-  
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+
 class Start extends Component {
     constructor(props) {
       super(props);
@@ -15,7 +16,8 @@ class Start extends Component {
         windowHeight: 0,
         windowWidth: 0,
         status: 'INITIAL', 
-        studentID: modelInstance.getStudentId(), 
+        studentID: cookies.get("studentID"),
+        token: cookies.get("token"),
         Qid: this.props.match.params.taskId
       }
 
@@ -27,12 +29,11 @@ class Start extends Component {
         window.addEventListener('resize', this.updateWindowDimensions);    
         console.log(this.state.Qid);
         modelInstance.setQuestionnaire(this.state.Qid);
-        modelInstance.fetchQuestions(this.state.studentID, this.state.Qid).then(questions => {
+        modelInstance.fetchQuestions(this.state.studentID, this.state.Qid, this.state.token).then(questions => {
           modelInstance.setQuestions(questions);
 
           let responseArray = questions.info.questions.map(question => (question.type == 'sociometric') ? [] : 0);
           modelInstance.setResponses(responseArray);
-          console.log("lol");
           this.setState({
             status: 'LOADED'
           });
@@ -85,8 +86,5 @@ class Start extends Component {
       );
     }
   }
-  /* under show
-  <div className="FormTitle">
-      <Link to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign In</Link> or <Link to="/sign-up" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Sign Up</Link>
-  </div> */
+
   export default Start;

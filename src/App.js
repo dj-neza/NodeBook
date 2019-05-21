@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {Link, Route} from "react-router-dom";
 
-import Home from "./Home";
+import Tasks from "./Tasks";
 import Start from "./Start";
 import Question from "./Question";
 import End from "./End";
@@ -13,6 +13,7 @@ import './App.css';
 import SignUp from "./SignUp";
 import NavLink from "react-bootstrap/NavLink";
 import SignIn from "./SignIn";
+import Home from "./Home";
 
 class App extends Component {
   constructor(props) {
@@ -30,8 +31,11 @@ class App extends Component {
                       <img src={logo_long} style={{width: "40%"}} alt=""/>
                   </Link>
           </div>
-          <Route exact path="/" 
-            render={() => <Home />}   
+          <Route exact path="/"
+                 render={() => <Home />}
+          />
+          <Route exact path="/tasks"
+            render={() => <Tasks />}
           />
           <Route exact path="/sign-up"
                     render={() => <SignUp />}
@@ -41,7 +45,7 @@ class App extends Component {
             render={() => <SignIn />}
           />
           <Route exact path="/student"
-            render={() => <Home />}  
+            render={() => <Tasks />}
           />
           <Route exact path="/student/:taskId"
             render={(props) => <Start {...props} teacher={this.state.teacher}  />}  
