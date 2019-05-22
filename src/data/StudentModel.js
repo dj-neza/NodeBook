@@ -30,6 +30,7 @@ class StudentModel extends ObservableModel {
     // }
 
     getAllQuestionnaires(studentID, token) {
+        console.log("get all questionnaire");
         const url = `${API_BASE_URL}/api/student/get_questionnaires/` + studentID;
         let httpOptionsUser = {
             headers: {"Authorization": "Bearer " + token}
