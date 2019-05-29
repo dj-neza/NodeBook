@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
-import {MdRefresh} from 'react-icons/md';
 import './App.css';
 import Cookies from "universal-cookie";
 import refresh from "./imgs/refresh.png";
@@ -31,16 +30,17 @@ class Tasks extends Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         modelInstance.getAllQuestionnaires(this.state.studentID, this.state.token).then(qs => {
-          if (qs.experiments.length != 0) {
+          if (qs.experiments.length !== 0) {
             this.setState({noActive: false});
-            this.state.questionnaires = qs.experiments;
-            for (var i = 0; i < qs.experiments.length; i++) {
-                let utcSeconds = new Date(qs.experiments[i].date);
+            let newEx = qs.experiments;
+            for (var i = 0; i < newEx.length; i++) {
+                let utcSeconds = new Date(newEx[i].date);
                 let d = new Date(0);
                 d.setUTCSeconds(utcSeconds);
                 let date = JSON.stringify(d).split("T")[0].split("\"")[1];
-                this.state.questionnaires[i].date = date;
+                newEx[i].date = date;
             }
+            this.setState({questionnaires: newEx});
           }
           this.setState({
             status: 'LOADED'
@@ -63,15 +63,16 @@ class Tasks extends Component {
         // this.setState({status: "INITIAL"});
         window.location.reload();
         modelInstance.getAllQuestionnaires(this.state.studentID, this.state.token).then(qs => {
-            if (qs.experiments.length != 0) {
-              this.state.questionnaires = qs.experiments;
-              for (let i = 0; i < qs.experiments.length; i++) {
-                  let utcSeconds = new Date(qs.experiments[i].date);
+            if (qs.experiments.length !== 0) {
+              let newEx = qs.experiments;
+              for (let i = 0; i < newEx.length; i++) {
+                  let utcSeconds = new Date(newEx[i].date);
                   let d = new Date(0);
                   d.setUTCSeconds(utcSeconds);
                   let date = JSON.stringify(d).split("T")[0].split("\"")[1];
-                  this.state.questionnaires[i].date = date;
+                  newEx[i].date = date;
                }
+               this.setState({questionnaires: newEx});
             }
             this.setState({
               status: 'LOADED'
@@ -86,7 +87,6 @@ class Tasks extends Component {
 
     render() {
         let h = this.state.windowHeight - 62;
-        const teacher = this.props.teacher;
         let show; 
 
         switch (this.state.status) {

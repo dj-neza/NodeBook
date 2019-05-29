@@ -1,11 +1,15 @@
 import ObservableModel from "../ObservableModel";
-import Cookies from "universal-cookie";
+//import Cookies from "universal-cookie";
 const API_BASE_URL= "https://redtachyon.eu.pythonanywhere.com";
+
+/* 
+FOR DEVELOPMENT
 const httpOptions = {
     headers: {"Authorization": "SKELETON_KEY"}
 };
 
 const cookies = new Cookies();
+*/
 
 class StudentModel extends ObservableModel {
     
@@ -138,7 +142,7 @@ class StudentModel extends ObservableModel {
         throw response;
     }
     getAnswers(question) {
-        if (question.type == "scalar") {
+        if (question.type === "scalar") {
             return this.getScalarAnswers(question.min, question.max);
         }
         else {

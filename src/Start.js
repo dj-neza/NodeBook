@@ -32,7 +32,7 @@ class Start extends Component {
         modelInstance.fetchQuestions(this.state.studentID, this.state.Qid, this.state.token).then(questions => {
           modelInstance.setQuestions(questions);
 
-          let responseArray = questions.info.questions.map(question => (question.type == 'sociometric') ? [] : 0);
+          let responseArray = questions.info.questions.map(question => (question.type === 'sociometric') ? [] : 0);
           modelInstance.setResponses(responseArray);
           this.setState({
             status: 'LOADED'

@@ -48,7 +48,7 @@ class SignIn extends Component {
 		e.preventDefault();
 		let email = this.state.email;
 		let password = this.state.password;
-		let token, message, status, studentID, teacherID;
+		//let token, message, status, studentID, teacherID;
 		modelInstance.logIn(email, password).then(result => {
 			result.json().then(data => ({
 					token: data.auth_token,
@@ -78,7 +78,7 @@ class SignIn extends Component {
 
 		return(
 			<div className="FormCenter">
-				<form onSubmit={this.handleSubmit} className="FormFields" onSubmit={this.handleSubmit}>
+				<form onSubmit={this.handleSubmit} className="FormFields">
 					<div className="FormField">
 						<label className="FormField__Label" htmlFor="email">E-Mail Address</label>
 						<input

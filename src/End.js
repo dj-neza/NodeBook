@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
-import { Row } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
 import './App.css';
 
@@ -30,7 +29,7 @@ class End extends Component {
         let responseArray = modelInstance.getResponses();
         let questions = modelInstance.getQuestions().info.questions;
         for (var i = 0; i < responseArray.length; i++) {
-          if (questions[i].type == "scalar" && responseArray[i] == 0) {
+          if (questions[i].type === "scalar" && responseArray[i] === 0) {
             proper = false;
           }
           else if (responseArray[i].length < questions[i].min) {
@@ -38,7 +37,7 @@ class End extends Component {
           }
         }
         
-        if (proper == true) {
+        if (proper === true) {
           modelInstance.submitQuestionnaire(this.state.studentID, {responses:responseArray}).then(qs => {
             this.setState({
               status: 'LOADED'
@@ -75,7 +74,7 @@ class End extends Component {
                       <h3 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>Your answers have been sent to the teacher!</h3>
                       <h2 style={{color: "#3f3f3f", padding: "20px", paddingTop: "80px"}}>Thank you!</h2>
 
-                      <img src={pic} width={100}/>
+                      <img src={pic} width={100} alt=""/>
                       <div style={{padding: "5px"}}><Link to={{
                           pathname: "/student"}}>
                             <Button variant="secondary" style={{width: "80%", backgroundColor: "#C56359"}}>CLOSE</Button> 
@@ -85,7 +84,7 @@ class End extends Component {
           case 'INCOMPLETE': 
             show = <div style={{paddingTop: "80px"}} align="center">
                     <h3 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>Please go back and answer all questions.</h3>
-                    <img src={pic2} width={100}/>
+                    <img src={pic2} width={100} alt=""/>
                     <div style={{padding: "5px"}}><Link to={{
                       pathname: "/question/" + parseInt(modelInstance.getQuestions().info.questions.length - 1),
                       query:{studentid: false}}}>

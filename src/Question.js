@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Button from 'react-bootstrap/Button';
-import { Row, Col } from "react-bootstrap";
 import { modelInstance } from './data/StudentModel';
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight} from 'react-icons/md';
 import './App.css';
@@ -43,13 +41,13 @@ class Question extends Component {
       let newResponse = this.state.response;
       let changed = false;
 
-      if (this.state.type == "sociometric") {
-        if (this.state.response.length == 0) {
+      if (this.state.type === "sociometric") {
+        if (this.state.response.length === 0) {
           newResponse[0] = parseInt(event.currentTarget.id);
         }
         else {
           for (var i = 0; i < this.state.response.length; i++) {
-            if (this.state.response[i] == parseInt(event.currentTarget.id)) {
+            if (this.state.response[i] === parseInt(event.currentTarget.id)) {
               newResponse.splice(i, 1);
               changed = true;
               break;
@@ -70,14 +68,14 @@ class Question extends Component {
       this.setState({ response: newResponse });
     }
     isItMarked(id) {
-      if (this.state.type == "sociometric") {
-        if (this.state.response.length == 0) return false;
+      if (this.state.type === "sociometric") {
+        if (this.state.response.length === 0) return false;
         for (var i = 0; i < this.state.response.length; i++) {
-          if (this.state.response[i] == parseInt(id)) return true; 
+          if (this.state.response[i] === parseInt(id)) return true; 
         }
       }
       else {
-        if (this.state.response == parseInt(id)) return true; 
+        if (this.state.response === parseInt(id)) return true; 
       }
       return false;
     }
@@ -104,16 +102,16 @@ class Question extends Component {
         <div className="start" align="center">
             <div style={{width: "100%", height: h, backgroundColor: "#f6f6f6"}} align="center">
                 <h4 style={{color: "#3f3f3f", padding: "30px", paddingTop: "80px"}}>{parseInt(id)+1}. {this.state.questions[parseInt(id)].text}</h4>
-                <div>{(this.state.type=="sociometric" && this.state.questions[parseInt(id)].min == this.state.questions[parseInt(id)].max) && <div>Select 1 answer.</div>}</div>
-                <div>{(this.state.type=="sociometric" && this.state.questions[parseInt(id)].min != this.state.questions[parseInt(id)].max) && <div>Select {this.state.questions[parseInt(id)].min} to {this.state.questions[parseInt(id)].max} answers.</div>}</div>
-                <div>{this.state.type=="scalar" && <div>least</div>}</div>
+                <div>{(this.state.type==="sociometric" && this.state.questions[parseInt(id)].min === this.state.questions[parseInt(id)].max) && <div>Select 1 answer.</div>}</div>
+                <div>{(this.state.type==="sociometric" && this.state.questions[parseInt(id)].min !== this.state.questions[parseInt(id)].max) && <div>Select {this.state.questions[parseInt(id)].min} to {this.state.questions[parseInt(id)].max} answers.</div>}</div>
+                <div>{this.state.type==="scalar" && <div>least</div>}</div>
                 <div style={{ maxHeight: "345px", overflow: "scroll", backgroundColor: "white"}}>
                     {this.state.answers.map((answer, i) => 
                     <div key={answer.id} id={answer.id} className="alo" style={this.isItMarked(answer.id) ? {backgroundColor: '#5E94B0'} : {backgroundColor: 'white'}} align="center" onClick={this.changeColor.bind(this)}>
                             {answer.name}
                     </div>)}
                 </div>
-                <div>{this.state.type=="scalar" && <div>most</div>}</div>
+                <div>{this.state.type==="scalar" && <div>most</div>}</div>
                 <div style={{paddingTop: "5px"}} >
                     <div style={{float: "left"}}><Link to={{pathname: back, 
                           query:{studentid: this.state.studentID}}} onClick={this.updateFnBack.bind(this)} style={{color: "#5E94B0"}}><div><MdKeyboardArrowLeft style={{width: "40", height: "40"}}/>Back</div></Link></div>

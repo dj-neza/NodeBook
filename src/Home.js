@@ -8,7 +8,7 @@ class Home extends Component {
 
 		return (
 			<div className="FormTitle">
-				<Link to="/sign-in" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Log In</Link> or <Link to="/sign-up" activeClassName="FormTitle__Link--Active" className="FormTitle__Link">Register</Link>
+				<Link to="/sign-in" activeclassname="FormTitle__Link--Active" className="FormTitle__Link">Log In</Link> or <Link to="/sign-up" activeclassname="FormTitle__Link--Active" className="FormTitle__Link">Register</Link>
 			</div>
 		)
 	}
